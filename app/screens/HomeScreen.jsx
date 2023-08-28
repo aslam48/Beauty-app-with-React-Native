@@ -1,12 +1,32 @@
 import { ActivityIndicator, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { Screen3 } from '../assets';
+import { fetchFeeds } from '../sanity';
 
 const HomeScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleSearchTerm = (text) => {
+    searchTerm(text)
+  }
+
+  useEffect(() => {
+    setIsLoading(true)
+    try{
+      fetchFeeds().then(res => {
+        console.log(res)
+        setInterval(() => { 
+          setIsLoading(false)
+        }, 2000)
+      })
+    }catch (error){
+      console.log(error)
+      setIsLoading(false)
+    }
+  },[])
 
   return (
     <SafeAreaView className="flex-1 justify-start align-center bg-[#EBEAEF]">
@@ -24,7 +44,7 @@ const HomeScreen = () => {
             className="text-base font-semibold text=[#555] flex-1 py-1 -mt-1 "
             placeholder="Search Here..."
             // value={searchTerm}
-            // onChangeText={handleSearchTerm}
+            onChangeText={handleSearchTerm}
           />
         </View>
 
@@ -41,6 +61,7 @@ const HomeScreen = () => {
           </View>
         ) : (
         <>
+        <Text>Feeds</Text>
         </>
         )}
       </ScrollView>
