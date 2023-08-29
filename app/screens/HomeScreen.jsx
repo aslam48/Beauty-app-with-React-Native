@@ -4,10 +4,13 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import {FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { Screen3 } from '../assets';
 import { fetchFeeds } from '../sanity';
+import { useDispatch } from 'react-redux';
+import { SET_FEEDS } from '../context/actions/feedActions';
 
 const HomeScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch()
 
   const handleSearchTerm = (text) => {
     searchTerm(text)
@@ -17,11 +20,13 @@ const HomeScreen = () => {
     setIsLoading(true)
     try{
       fetchFeeds().then(res => {
-        console.log(res)
+        // console.log(res)
+        dispatch(SET_FEEDS(res))
         setInterval(() => { 
           setIsLoading(false)
         }, 2000)
       })
+      console.log("feed from store", )
     }catch (error){
       console.log(error)
       setIsLoading(false)
