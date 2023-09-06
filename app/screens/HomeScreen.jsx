@@ -34,6 +34,7 @@ const HomeScreen = () => {
       console.log(error)
       setIsLoading(false)
     } 
+    
   },[])
 
   
