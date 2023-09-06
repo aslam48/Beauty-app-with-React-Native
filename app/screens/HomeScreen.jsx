@@ -4,10 +4,16 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import {FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { Screen3 } from '../assets';
 import { fetchFeeds } from '../sanity';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_FEEDS } from '../context/actions/feedActions';
+import Feeds from '../components/Feeds';
 
 const HomeScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const feeds = useSelector((state)=> state.feeds)
+  const dispatch = useDispatch()
 
   const handleSearchTerm = (text) => {
     searchTerm(text)
@@ -17,7 +23,9 @@ const HomeScreen = () => {
     setIsLoading(true)
     try{
       fetchFeeds().then(res => {
-        console.log(res)
+        // console.log(res)
+        dispatch(SET_FEEDS(res))
+      // console.log("feed from store", feeds.feeds)
         setInterval(() => { 
           setIsLoading(false)
         }, 2000)
@@ -25,7 +33,7 @@ const HomeScreen = () => {
     }catch (error){
       console.log(error)
       setIsLoading(false)
-    }
+    } 
   },[])
 
   
@@ -63,12 +71,12 @@ const HomeScreen = () => {
           </View>
         ) : (
         <>
-        <Text>Feeds</Text>
+        <Feeds feeds={feeds?.feeds}/>
         </>
         )}
       </ScrollView>
   </SafeAreaView>
   )
 }
-
+ 
 export default HomeScreen
