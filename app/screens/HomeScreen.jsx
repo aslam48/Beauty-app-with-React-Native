@@ -28,6 +28,8 @@ const HomeScreen = () => {
     }
   },[])
 
+  
+
   return (
     <SafeAreaView className="flex-1 justify-start align-center bg-[#EBEAEF]">
   <View className="w-full flex-row items-center justify-between px-4 py-2">
